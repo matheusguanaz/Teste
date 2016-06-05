@@ -1,0 +1,116 @@
+
+
+ import processing.serial.*;
+
+ PImage img, img2, img3, img4, img5, img6; 
+ Serial myPort;        // The serial port
+ int xPos = 1;
+  int tempo=0;
+  int semaforo = 0;
+
+ void setup () {
+ // tamanho da janela
+ size(1280, 720);
+   img = loadImage("sim.jpg");
+   img2 = loadImage("vzz.jpg");
+   img3 = loadImage("nao.jpg");
+   img4 = loadImage("dor.jpg");
+   img5 = loadImage("banheiro.jpg");
+   img6 = loadImage("emergencia.jpg");
+
+ // imprime as portas seriais
+ 
+ println(Serial.list());
+ 
+ //definindo a porta serial
+ myPort = new Serial(this, Serial.list()[3], 9600);
+ 
+ 
+ myPort.bufferUntil('\n');
+ 
+ // tela de fundo
+ background(0);
+ image(img2, 0, 0);
+ }
+ void draw () {
+ // everything happens in the serialEvent()
+ }
+
+ void serialEvent (Serial myPort) {
+ // get the ASCII string:
+ String inString = myPort.readStringUntil('\n');
+
+  int index = inString.indexOf("X=",0);
+  String Xstr = inString.substring(index+2, index+6);
+  int indey = inString.indexOf("Y=",0);
+  String Ystr = inString.substring(indey+2, indey+6);
+  int indez = inString.indexOf("Z=",0);
+  String Zstr = inString.substring(indez+2,indez+3);
+  
+  print(inString);
+  
+  println("x-->" + Xstr + " y-->" + Ystr + " z-->" + Zstr);
+  
+  int jx = 0, jy = 0, jz = 0;
+ 
+ //  convertendo string pra um inteiro
+  if (Xstr != null) {
+      Xstr = trim(Xstr);
+      jx = int(Xstr);
+      println("Conv: x->" + jx);
+    }
+    
+     if (Ystr != null) {
+      Ystr = trim(Ystr);
+      jy = int(Ystr);
+      println("Conv: y->" + jy);
+     }
+      if (Zstr != null) {
+      Zstr = trim(Zstr);
+      jz = int(Zstr);
+      println("Conv: z->" + jz);
+      }
+   
+   
+    if(jx>1000){
+        image(img3, 0, 0);
+        tempo = millis();
+        semaforo = 1;
+        
+    }else{
+      //background(0);
+    }
+    if(jx<300){
+        image(img, 0, 0 );
+        tempo = millis();
+        semaforo = 1;
+    }
+    
+     if(jy<300){
+        image(img4, 0, 0 );
+        tempo = millis();
+        semaforo = 1;
+    }
+     if(jy>1000){
+        image(img5, 0, 0 );
+        tempo = millis();
+        semaforo = 1;
+     }
+      if(jz==0){
+        image(img6, 0, 0 );
+        tempo = millis();
+        semaforo = 1;
+      }
+    if (millis()-tempo > 4000 && semaforo>0){
+      background(0);
+       image(img2, 0, 0);
+        semaforo = 0;
+    }
+      
+    
+    
+  
+ }
+ 
+ 
+ 
