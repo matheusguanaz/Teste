@@ -2,7 +2,7 @@
 
  import processing.serial.*;
 
- PImage img, img2, img3, img4, img5, img6; 
+ PImage img, img2, img3, img4, img5, img6; //declarando variáveis para imagens
  Serial myPort;        // The serial port
  int xPos = 1;
   int tempo=0;
@@ -11,7 +11,7 @@
  void setup () {
  // tamanho da janela
  size(1280, 720);
-   img = loadImage("sim.jpg");
+   img = loadImage("sim.jpg"); //carregando imagens
    img2 = loadImage("vzz.jpg");
    img3 = loadImage("nao.jpg");
    img4 = loadImage("dor.jpg");
@@ -36,27 +36,27 @@
  // everything happens in the serialEvent()
  }
 
- void serialEvent (Serial myPort) {
- // get the ASCII string:
+ void serialEvent (Serial myPort) { //utilizando o serial event, quando o que acontecer for verdadeiro ele executa
+ 
  String inString = myPort.readStringUntil('\n');
 
-  int index = inString.indexOf("X=",0);
-  String Xstr = inString.substring(index+2, index+6);
-  int indey = inString.indexOf("Y=",0);
-  String Ystr = inString.substring(indey+2, indey+6);
-  int indez = inString.indexOf("Z=",0);
-  String Zstr = inString.substring(indez+2,indez+3);
+  int index = inString.indexOf("X=",0); //define uma string para o valor de X impresso da arduíno
+  String Xstr = inString.substring(index+2, index+6); //pega o valor que está escrito depois de de "X=" até 6 espaços depois do "X=";
+  int indey = inString.indexOf("Y=",0); //define uma string para o valor de Y impresso da arduíno
+  String Ystr = inString.substring(indey+2, indey+6);//pega o valor que está escrito depois de de "Y=" até 6 espaços depois do "Y=";
+  int indez = inString.indexOf("Z=",0); //define uma string para o valor de Z impresso da arduíno
+  String Zstr = inString.substring(indez+2,indez+3);//pega o valor que está escrito depois de de "Z=" até 3 espaços depois do "Z=";
   
   print(inString);
   
-  println("x-->" + Xstr + " y-->" + Ystr + " z-->" + Zstr);
+  println("x-->" + Xstr + " y-->" + Ystr + " z-->" + Zstr); //imprime os valores da string
   
   int jx = 0, jy = 0, jz = 0;
  
  //  convertendo string pra um inteiro
-  if (Xstr != null) {
-      Xstr = trim(Xstr);
-      jx = int(Xstr);
+  if (Xstr != null) { //se o valor da string de X for diferente de nulo
+      Xstr = trim(Xstr); //tira os possíveis espaços vazios da string
+      jx = int(Xstr); // converte a string para um número inteiro
       println("Conv: x->" + jx);
     }
     
